@@ -9,10 +9,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');// {}で複数あるclean...plugin機能の特定のやつだけ使う
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/javascripts/main.js',
   output: {//出力先
     path: path.resolve(__dirname, './dist'),//path.resolveで絶対パスを取得（webpack絶対パスじゃないとエラー）引数1＝現在のフォルダのある階層。
-    filename: 'main.js',//出力されるファイル名を変更
+    filename: 'javascripts/main.js',//出力されるファイル名を変更
   },
   module: {
     rules: [//配列
@@ -30,9 +30,11 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: './stylesheets/main.css',
+    }),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: './src/templates/index.html',
     }),
     new CleanWebpackPlugin(),
   ]
