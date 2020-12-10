@@ -1,6 +1,10 @@
 
 //webpackの設定ファイル
 const path = require('path');
+// less32
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// less33
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -14,15 +18,21 @@ module.exports = {
         test: /\.css/,
         use: [
           {
-            loader: 'style-loader',
+            loader: MiniCssExtractPlugin.loader,//読みこんだcssを処理
           },//loaderは必ず "下から上に" 適用されていく。→　.cssあったら、まず、css-loader読み込まれ、次にstyle-loader
           {
-            loader: 'css-loader',
+            loader: 'css-loader',//cssを読み込み
           },
         ],
       },
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
+  ]
 }
 /*
 rulesは張烈
