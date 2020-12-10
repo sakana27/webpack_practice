@@ -5,6 +5,8 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // less33
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// less35
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');// {}で複数あるclean...plugin機能の特定のやつだけ使う
 
 module.exports = {
   entry: './src/index.js',
@@ -32,6 +34,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
+    new CleanWebpackPlugin(),
   ]
 }
 /*
