@@ -23,7 +23,19 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,//読みこんだcssを処理
           },//loaderは必ず "下から上に" 適用されていく。→　.cssあったら、まず、css-loader読み込まれ、次にstyle-loader
           {
-            loader: 'css-loader',//cssを読み込み
+            loader: 'css-loader',//.cssのファイルを読み込み
+          },
+        ],
+      },
+      {//less40
+        test: /\.(png|jpg)/,//.png, .jpgのファイル読み込み
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              esModule: false,
+              name: 'images/[name].[ext]',//extは拡張子
+            },
           },
         ],
       },
