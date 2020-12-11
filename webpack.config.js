@@ -17,13 +17,16 @@ module.exports = {
   module: {
     rules: [//配列
       {
-        test: /\.css/,
+        test: /\.(css|sass|scss)/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,//読みこんだcssを処理
           },//loaderは必ず "下から上に" 適用されていく。→　.cssあったら、まず、css-loader読み込まれ、次にstyle-loader
           {
             loader: 'css-loader',//.cssのファイルを読み込み
+          },
+          {
+            loader: 'sass-loader',
           },
         ],
       },
@@ -66,6 +69,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/templates/access.pug',
       filename: 'access.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/templates/members/taro.pug',
+      filename: 'members/taro.html'
     }),
     new CleanWebpackPlugin(),
   ]
