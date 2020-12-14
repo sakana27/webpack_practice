@@ -9,6 +9,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');// {}で複数あるclean...plugin機能の特定のやつだけ使う
 
 module.exports = {
+  mode: 'development',
+  devtool: 'source-map',//less62 jsコードを人間が読みやすいようにする。
   entry: './src/javascripts/main.js',
   output: {//出力先
     path: path.resolve(__dirname, './dist'),//path.resolveで絶対パスを取得（webpack絶対パスじゃないとエラー）引数1＝現在のフォルダのある階層。
@@ -16,7 +18,22 @@ module.exports = {
   },
   module: {
     rules: [//配列
-      {
+      {// JS系
+        test: /\.js/,
+        exclude: /node_modules/,//node_moduleはトランスパイルしない
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [
+                ['@babel/preset-env', { 'targets': '> 0.25%, not dead'}],
+                '@babel/preset-react',
+              ],//babelプラグインをまとめてインストール。{}内は、0.25%以上のシェアを持っているブラウザで且つ公式のサポートが終了していないブラウザを対象にトランスパイル
+            }
+          }
+        ]
+      },
+      {//CSS系
         test: /\.(css|sass|scss)/,
         use: [
           {
@@ -24,14 +41,17 @@ module.exports = {
           },//loaderは必ず "下から上に" 適用されていく。→　.cssあったら、まず、css-loader読み込まれ、次にstyle-loader
           {
             loader: 'css-loader',//.cssのファイルを読み込み
+            options: {
+              sourceMap: true,
+            },
           },
           {
             loader: 'sass-loader',
           },
         ],
       },
-      {//less40
-        test: /\.(png|jpg)/,//.png, .jpgのファイル読み込み
+      {//less40　画像系
+        test: /\.(png|jpg|jpeg)/,//.png, .jpgのファイル読み込み
         use: [
           {
             loader: 'file-loader',
@@ -40,9 +60,18 @@ module.exports = {
               name: 'images/[name].[ext]',//extは拡張子
             },
           },
+          {// less66
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65,//圧縮率
+              },
+            },
+          },
         ],
       },
-      {
+      {// PUG・HTML系
         test: /\.pug/,
         use: [
           {
