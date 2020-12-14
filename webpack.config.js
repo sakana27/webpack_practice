@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // less35
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');// {}で複数あるclean...plugin機能の特定のやつだけ使う
+const loader = require('sass-loader');
 
 module.exports = {
   mode: 'development',
@@ -18,6 +19,15 @@ module.exports = {
   },
   module: {
     rules: [//配列
+      {
+        test: /\.(ts|tsx)/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+          },
+        ],
+      },
       {// JS系
         test: /\.js/,
         exclude: /node_modules/,//node_moduleはトランスパイルしない
